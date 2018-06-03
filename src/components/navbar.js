@@ -20,27 +20,31 @@ class Navbar extends React.Component {
     render() {
         return (
             <nav className='navbar is-info' role='navigation' aria-label='main navigation'>
-                <div className='navbar-brand'>
-                    <a className='navbar-item' href='#'>EASTERLYWAVE</a>
-                    <div className={classnames({
-                        'navbar-burger': true,
-                        'burger': true,
-                        'is-active': this.state.toggleOn
-                    })} data-target='burgerTarget' onClick={this.toggleMenu}>
-                        <span></span>
-                        <span></span>
-                        <span></span>
+                <div className='container'>
+                    <div className='navbar-brand'>
+                        <a className='navbar-item' href='#'>EASTERLYWAVE</a>
+                        <div className={classnames({
+                            'navbar-burger': true,
+                            'burger': true,
+                            'is-active': this.state.toggleOn
+                        })} data-target='burgerTarget' onClick={this.toggleMenu}>
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </div>
                     </div>
-                </div>
-                <div id='burgerTarget' className={classnames({
-                    'navbar-menu':true,
-                    'is-active':this.state.toggleOn
-                })}>
-                    <div className='navbar-start'>
-                        <NavLink className='navbar-item' to='/model'>Model</NavLink>
-                        <NavLink className='navbar-item' to='/typhoon'>Typhoon</NavLink>
-                        <NavLink className='navbar-item' to='/weather'>Weather</NavLink>
-                        <NavLink className='navbar-item' to='/about'>About</NavLink>
+                    <div id='burgerTarget' className={classnames({
+                        'navbar-menu':true,
+                        'is-active':this.state.toggleOn
+                        })}>
+                        <div className='navbar-end'>
+                            <div className='navbar-start'>
+                                <NavLink className='navbar-item' to='/model' activeClassName='is-active'>Model</NavLink>
+                                <NavLink className='navbar-item' to='/typhoon' activeClassName='is-active'>Typhoon</NavLink>
+                                <NavLink className='navbar-item' to='/weather' activeClassName='is-active'>Weather</NavLink>
+                                <NavLink className='navbar-item' to='/about' activeClassName='is-active'>About</NavLink>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </nav>
