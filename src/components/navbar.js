@@ -1,6 +1,8 @@
 import classnames from 'classnames';
 import React from 'react';
 import { NavLink } from 'react-router-dom';
+import '../styles/navbar.css';
+import logo from '../easterlywave.png';
 
 class Navbar extends React.Component {
 
@@ -19,10 +21,12 @@ class Navbar extends React.Component {
 
     render() {
         return (
-            <nav className='navbar is-info' role='navigation' aria-label='main navigation'>
-                <div className='container'>
+            <nav className='navbar' role='navigation' aria-label='main navigation'>
+                <div className='container big'>
                     <div className='navbar-brand'>
-                        <a className='navbar-item' href='#'>EASTERLYWAVE</a>
+                        <a className='navbar-item' href='#'>
+                            <img src={logo} alt='EASTERLYWAVE'/>
+                        </a>
                         <div className={classnames({
                             'navbar-burger': true,
                             'burger': true,
@@ -37,13 +41,11 @@ class Navbar extends React.Component {
                         'navbar-menu':true,
                         'is-active':this.state.toggleOn
                         })}>
-                        <div className='navbar-end'>
-                            <div className='navbar-start'>
-                                <NavLink className='navbar-item' to='/model' activeClassName='is-active'>Model</NavLink>
-                                <NavLink className='navbar-item' to='/typhoon' activeClassName='is-active'>Typhoon</NavLink>
-                                <NavLink className='navbar-item' to='/weather' activeClassName='is-active'>Weather</NavLink>
-                                <NavLink className='navbar-item' to='/about' activeClassName='is-active'>About</NavLink>
-                            </div>
+                        <div className='navbar-start'>
+                            <NavLink className='navbar-item' to='/model' activeClassName='is-active'>Model</NavLink>
+                            <NavLink className='navbar-item' to='/typhoon' activeClassName='is-active'>Typhoon</NavLink>
+                            <NavLink className='navbar-item' to='/weather' activeClassName='is-active'>Weather</NavLink>
+                            <NavLink className='navbar-item' to='/about' activeClassName='is-active'>About</NavLink>
                         </div>
                     </div>
                 </div>
