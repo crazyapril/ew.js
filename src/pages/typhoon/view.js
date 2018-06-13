@@ -1,9 +1,10 @@
 import React from 'react';
+import TyphoonPage from './page';
 
-const view = () => {
+const TyphoonPageView = () => {
     return (
-        <h5>Page</h5>
+        <TyphoonPage/>
     );
 }
 
-export default view;
+export default TyphoonPageView;

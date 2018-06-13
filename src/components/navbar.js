@@ -21,7 +21,7 @@ class Navbar extends React.Component {
 
     render() {
         return (
-            <nav className='navbar' role='navigation' aria-label='main navigation'>
+            <nav className='navbar has-shadow is-spaced' role='navigation' aria-label='main navigation'>
                 <div className='container big'>
                     <div className='navbar-brand'>
                         <a className='navbar-item' href='#'>
