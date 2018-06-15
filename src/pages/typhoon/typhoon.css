@@ -1,0 +1,36 @@
+.ty-card {
+  border-radius: 15px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: box-shadow 0.4s;
+}
+
+.ty-card:hover {
+  box-shadow: 0 0 3px 3px rgba(100, 100, 100, 0.1), 0 0 0 1px rgba(100, 100, 100, 0.1)
+}
+
+.ty-card .card-content {
+  padding: 0.5rem 1rem;
+}
+
+.panel-full {
+  width: 100%;
+}
+
+.nav-choice a {
+  align-items: center;
+  display: flex;
+  justify-content: flex-start;
+  padding: 0.2em 1.25em;
+  margin: 0.05em 0;
+  color: #363636;
+  border-radius: 10px;
+}
+
+.nav-choice a:hover {
+  background-color: whitesmoke;
+}
+
+.nav-choice a.is-active {
+  background-color: whitesmoke;
+}

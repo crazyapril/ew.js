@@ -8,24 +8,30 @@ class Panel extends React.Component {
   render() {
     return ([
       <div className='level'>
-        <nav className='panel panel-full'>
-          <p className='panel-heading'>
-            Current Time
+        <nav className='nav-choice'>
+          <p className='heading'>
+            Model Run
           </p>
-          <a className='panel-block is-active'>
-            2018/06/12 00Z
+          <a className='is-active'>
+            06/15 00Z
+          </a>
+          <a>
+            06/14 12Z
+          </a>
+          <a>
+            06/14 00Z
           </a>
         </nav>
       </div>,
       <div className='level'>
-        <nav className='panel panel-full'>
-          <p className='panel-heading'>
+        <nav className='nav-choice'>
+          <p className='heading'>
             Time Range
           </p>
-          <a className='panel-block is-active'>
+          <a className='is-active'>
             10 days
           </a>
-          <a className='panel-block'>
+          <a>
             5 days
           </a>
         </nav>
