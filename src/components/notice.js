@@ -32,7 +32,7 @@ export default class NoticeBanner extends Component {
       '/action/notices',
       {},
     ).then(response => {
-      this.setState(response.data.notices);
+      this.setState({notices: response.data.notices});
     });
   }
 

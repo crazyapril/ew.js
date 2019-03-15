@@ -35,14 +35,8 @@ class WeatherPage extends React.Component {
       {content: query},
     ).then(response => {
       const suggestions = response.data.suggestions;
-      if (suggestions.length) this.setState({items: this.initMessage});
-      else this.setState({items: suggestions});
-    }).catch(error => {
-      const response = {"status": 0, "suggestions": [
-        {"value": "华山", "data": "57046"}, {"value": "杭州", "data": "58457"},
-        {"value": "武汉", "data": "57494"}, {"value": "大荔", "data": "57043"},
-        {"value": "广州", "data": "59287"}]};
-      this.setState({items: response.suggestions});
+      if (suggestions.length) this.setState({items: suggestions});
+      else this.setState({items: this.initMessage});
     });
   }
 
@@ -54,11 +48,8 @@ class WeatherPage extends React.Component {
       '/action/weather/plot',
       {content: query}
     ).then(response => {
-      if (response.data.status !== '0') this.setState({requesting: false, imgIsFailed: true, prevQuery: query});
+      if (response.data.status !== 0) this.setState({requesting: false, imgIsFailed: true, prevQuery: query});
       else this.setState({requesting: false, imgIsFailed: false, imgSrc: response.data.src, prevQuery: query});
-    }).catch(error => {
-      console.log('www');
-      setTimeout(() => {this.setState({requesting: false, imgIsFailed: true, prevQuery: query})}, 1000);
     });
   }
 
@@ -98,12 +89,15 @@ class WeatherPage extends React.Component {
                 />
               </div>
               <div className='control'>
-                <a className={classnames({
-                  'button': true,
-                  'is-danger': true,
-                  'is-rounded': true,
-                  'is-loading': this.state.requesting
-                })}><i className='fas fa-umbrella'></i></a>
+                <a
+                  onClick={() => {this.onInputSelect(this.state.value, null)}}
+                  className={classnames({
+                    'button': true,
+                    'is-danger': true,
+                    'is-rounded': true,
+                    'is-loading': this.state.requesting
+                  })}
+                ><i className='fas fa-umbrella'></i></a>
               </div>
             </div>
           </div>
@@ -111,11 +105,9 @@ class WeatherPage extends React.Component {
         </div>
         <div className='columns col-pad'></div>
         <div className='columns'>
-          <div className='column is-one-fifth'></div>
-          <div className='column'>
+          <div className='column is-12'>
             <ImageBox src={this.state.imgSrc} isFailed={this.state.imgIsFailed} message={this.state.imgMessage} />
           </div>
-          <div className='column is-one-fifth'></div>
         </div>
       </div>
     )

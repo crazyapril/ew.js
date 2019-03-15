@@ -14,13 +14,12 @@ class App extends Component {
     return (
       <BrowserRouter>
         <div>
-          <link href="https://cdn.bootcss.com/font-awesome/5.7.2/css/all.min.css" rel="stylesheet" />
           <Navbar/>
           <NoticeBanner/>
           <main className='bd-main'>
             <div className='container'>
               <Switch>
-                <Route path='/' exact component={devpage} />
+                <Route path='/home' exact component={devpage} />
                 <Route path='/weather' component={() => <WeatherPage/>} />
                 <Redirect from='/windygram' to='/weather' />
                 <Route path='/satellite' component={() => <SatellitePage/>} />
