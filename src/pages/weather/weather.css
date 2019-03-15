@@ -1,0 +1,11 @@
+.columns.col-pad {
+  height: 1.5rem;
+}
+
+.columns.col-pad-x2 {
+  height: 3rem;
+}
+
+.is-expanded > div {
+  width: 100%
+}

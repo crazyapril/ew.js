@@ -1,0 +1,17 @@
+.span-full {
+  background-color: #4a4a4a;
+  border-radius: 25px;
+  color: #fff;
+  display: block;
+  font-weight: 300;
+  justify-content: space-between;
+  line-height: 1.25;
+  padding: .2em .5em;
+  position: relative;
+  margin-bottom: .5rem;
+}
+
+.span-full > p {
+  padding: 5px;
+  box-sizing: border-box;
+}

@@ -1,0 +1,26 @@
+
+.panel-full {
+  width: 100%;
+}
+
+.nav-choice a {
+  align-items: center;
+  display: flex;
+  justify-content: flex-start;
+  padding: 0.2em 1.25em;
+  margin: 0.05em 0;
+  color: #363636;
+  border-radius: 16px;
+}
+
+.nav-choice a[disabled] {
+  color: #B8B8B8;
+}
+
+.nav-choice a:hover:not([disabled]) {
+  background-color: whitesmoke;
+}
+
+.nav-choice a.is-active {
+  background-color: whitesmoke;
+}
