@@ -1,0 +1,32 @@
+.less-padding .card-content {
+  padding: 0.5rem 0.5rem;
+}
+
+.card-content > .title {
+  margin-bottom: 1rem !important;
+}
+
+.card-mid {
+  margin-bottom: 0.75rem !important;
+  overflow: hidden;
+  vertical-align: bottom;
+}
+
+.card-mid > p, .card-mid > div {
+  display: inline-block
+}
+
+.article {
+  cursor: pointer;
+  margin-bottom: 2rem;
+  transition: all .1s ease-in-out;
+}
+
+.article:hover {
+  transform: scale(1.005);
+  box-shadow: 0 0 2px 2px rgba(30, 30, 30, 0.1), 0 0 0 1px rgba(30, 30, 30, 0.1)
+}
+
+.is-size-6-half {
+  font-size: 0.9rem !important;
+}
