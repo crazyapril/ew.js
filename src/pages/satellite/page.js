@@ -66,7 +66,7 @@ export default class SatellitePage extends Component {
               <p>{this.state.serviceStatus ? 'Service ON' : 'Service OFF'}</p>
             </div>
             <div className='span-full has-background-white-ter has-text-black is-size-6'>
-              <p>Himawari-8 target area imagery. If there is active cyclone activity on the Pacific, we will turn on this service tracking typhoons in real time!
+              <p>Himawari-8 target area imagery. The service will be turned on when active cyclone activity is observed in the Western Pacific.
               </p>
             </div>
         </div>

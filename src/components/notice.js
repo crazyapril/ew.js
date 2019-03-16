@@ -39,7 +39,7 @@ export default class NoticeBanner extends Component {
   render() {
     return ([
       this.state.notices.map((item, i) => item.closed ? null :
-        <div className='container is-fullhd' key={i.toString()}>
+        <div className='is-fullwidth' key={i.toString()}>
           <div className={classnames(['notification', this.noticeTypeToClass(item.type)])}>
             <a className={classnames(['is-small', 'is-pulled-right', 'is-inverted',
               this.noticeTypeToClass(item.type)])} onClick={() => this.removeNotice(i)}>
