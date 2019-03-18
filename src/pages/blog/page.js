@@ -43,12 +43,12 @@ export default class BlogPage extends Component {
     this.state = {
       articles: [],
       moreArticle: true,
-      loadedArticles: 0,
       requestedArticles: 5,
       redirect: null,
       toggleOn: false,
       tagFilter: '所有',
-      tags: []
+      tags: [],
+      requesting: false
     }
 
     this.loadMoreArticle = this.loadMoreArticle.bind(this);
@@ -56,13 +56,26 @@ export default class BlogPage extends Component {
   }
 
   componentDidMount() {
-    this.loadNewTagArticle(this.state.tagFilter);
-    Axios.post(
-      'action/blog/tags',
-      {}
-    ).then(response => {
-      this.setState({tags: response.data.tags})
-    });
+    if (this.props.hp.scrollY !== null) {
+      this.setState(this.props.hp);
+      window.scrollTo(0, this.props.hp.scrollY);
+    } else {
+      this.loadMoreArticle();
+      Axios.post(
+        'action/blog/tags',
+        {}
+      ).then(response => {
+        this.setState({tags: response.data.tags})
+      });
+    }
+  }
+
+  componentWillUnmount() {
+    this.props.hp.articles = this.state.articles;
+    this.props.hp.moreArticle = this.state.moreArticle;
+    this.props.hp.tags = this.state.tags;
+    this.props.hp.tagFilter = this.state.tagFilter;
+    this.props.hp.scrollY = window.scrollY;
   }
 
   loadNewTagArticle(tagName) {
@@ -78,18 +91,18 @@ export default class BlogPage extends Component {
       this.setState({
         articles: data.articles,
         moreArticle: data.articles.length === this.state.requestedArticles,
-        loadedArticles: data.articles.length,
         tagFilter: tagName
       });
     });
   }
 
   loadMoreArticle() {
+    this.setState({requesting: true});
     Axios.post(
       'action/blog/articles',
       {
         tagFilter: this.state.tagFilter,
-        offset: this.state.loadedArticles,
+        offset: this.state.articles.length,
         length: this.state.requestedArticles
       }
     ).then(response => {
@@ -97,8 +110,8 @@ export default class BlogPage extends Component {
       this.setState(prev => ({
         articles: Array.prototype.concat(prev.articles, data.articles),
         moreArticle: data.articles.length === this.state.requestedArticles,
-        loadedArticles: prev.loadedArticles + data.articles.length,
-        tagFilter: this.state.tagFilter
+        tagFilter: this.state.tagFilter,
+        requesting: false
       }));
     });
   }
@@ -112,7 +125,7 @@ export default class BlogPage extends Component {
           <div className='card has-shadow'>
             <div className='card-content has-background-primary has-text-centered has-text-white'>
               <p className='is-size-2'><i className='fas fa-grin-squint-tears'></i></p>
-              <p className='is-size-7'>@easterlywave</p>
+              <p className='is-size-7'>台风论坛 @nasdaq</p>
             </div>
             <div className='card-content has-background-primary has-text-centered has-text-white is-hidden-desktop' style={{padding: '0.25rem'}}>
               <p><i className={classnames([
@@ -157,7 +170,13 @@ export default class BlogPage extends Component {
           { this.state.moreArticle &&
             <div className='level'>
             <div className='level-item'>
-              <button className='button is-primary is-rounded' onClick={() => {this.loadMoreArticle()}}>加载更多...</button>
+              <button
+                className={classnames({
+                  'button': true,
+                  'is-primary': true,
+                  'is-rounded': true,
+                  'is-loading': this.state.requesting
+                })} onClick={() => {this.loadMoreArticle()}}>加载更多...</button>
             </div>
             </div>
           }

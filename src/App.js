@@ -13,6 +13,19 @@ import 'bulma/css/bulma.css';
 import './styles/main.css';
 
 class App extends Component {
+
+  constructor(props) {
+    super(props)
+
+    this.state = {
+      articles: [],
+      moreArticle: false,
+      tagFilter: '所有',
+      tags: [],
+      scrollY: null
+    }
+  }
+
   render() {
     return (
       <BrowserRouter>
@@ -22,11 +35,11 @@ class App extends Component {
           <main className='bd-main'>
             <div className='container'>
               <Switch>
-                <Route path='/home' exact component={() => <BlogPage/>} />
-                <Route path='/weather' component={() => <WeatherPage/>} />
+                <Route path='/home' exact component={() => <BlogPage hp={this.state} />} />
+                <Route path='/weather' component={WeatherPage} />
                 <Redirect from='/windygram' to='/weather' />
                 <Redirect from='/' exact to='/home' />
-                <Route path='/satellite' component={() => <SatellitePage/>} />
+                <Route path='/satellite' component={SatellitePage} />
                 <Route path='/about' component={devpage} />
                 <Route path='/blog/:pk' component={({match}) => <Article pk={match.params.pk}/>} />
                 <Route component={page404} />
