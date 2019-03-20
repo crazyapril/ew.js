@@ -13,10 +13,9 @@ export default class SatellitePage extends Component {
     this.imageTypes = ['VIS', 'IR', 'IR-BD', 'IR-CA', 'IR-RBTOP', 'WV-NRL'].map(val => (
       {val: val, disabled: false}
     ));
-    this.imageTypes[0].disabled = true;
 
     this.state = {
-      imagePath: this.getImagePath(this.imageTypes[1].val),
+      imagePath: this.getImagePath(this.imageTypes[0].val),
       serviceStatus: false
     };
 
@@ -25,7 +24,8 @@ export default class SatellitePage extends Component {
   }
 
   getImagePath(imageType) {
-    imageType = imageType.toLowerCase().replace('ir', 'b13').replace('wv', 'b8').replace('-', '');
+    imageType = imageType.toLowerCase().replace('vis', 'b3').replace('ir', 'b13')
+                         .replace('wv', 'b8').replace('-', '');
     return '/media/latest/sate/' + imageType + '.png';
   }
 
@@ -50,7 +50,7 @@ export default class SatellitePage extends Component {
             heading='Choose image types'
             entries={this.imageTypes}
             onListChange={this.handleClick}
-            initIndex={1}
+            initIndex={0}
           />
         </div>
         <div className='column is-8'>
