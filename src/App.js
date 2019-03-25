@@ -3,7 +3,6 @@ import {BrowserRouter, Redirect, Route, Switch} from 'react-router-dom';
 import Navbar from "./components/navbar.js";
 import devpage from "./pages/devpage";
 import page404 from "./pages/404";
-import TyphoonPageView from './pages/typhoon/view';
 import BlogPage from './pages/blog/page';
 import Article from './pages/blog/article';
 import WeatherPage from './pages/weather/page';
