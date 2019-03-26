@@ -34,10 +34,10 @@ class App extends Component {
           <main className='bd-main'>
             <div className='container'>
               <Switch>
-                <Route path='/home' exact component={() => <BlogPage hp={this.state} />} />
+                <Route path='/' exact component={() => <BlogPage hp={this.state} />} />
                 <Route path='/weather' component={WeatherPage} />
                 <Redirect from='/windygram' to='/weather' />
-                <Redirect from='/' exact to='/home' />
+                <Redirect from='/home' exact to='/' />
                 <Route path='/satellite' component={SatellitePage} />
                 <Route path='/about' component={devpage} />
                 <Route path='/blog/:pk' component={({match}) => <Article pk={match.params.pk}/>} />

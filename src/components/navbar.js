@@ -24,7 +24,7 @@ class Navbar extends React.Component {
       <nav className='navbar has-shadow is-spaced' aria-label='main navigation'>
         <div className='container big'>
           <div className='navbar-brand'>
-            <Link className='navbar-item' to='/home'>
+            <Link className='navbar-item' to='/'>
               <img src={logo} alt='EASTERLYWAVE'/>
             </Link>
             <div className={classnames({
