@@ -45,9 +45,17 @@ class Navbar extends React.Component {
               <NavLink className='navbar-item' to='/weather' activeClassName='is-active'>
                 <span className='navbar-icon has-text-danger'><i className='fas fa-umbrella'></i></span>Weather
               </NavLink>
-              <NavLink className='navbar-item' to='/satellite' activeClassName='is-active'>
-                <span className='navbar-icon has-text-primary'><i className='fas fa-satellite'></i></span>Satellite
+              <NavLink className='navbar-item' to='/typhoon' activeClassName='is-active'>
+                <span className='navbar-icon has-text-primary'><i className='fas fa-wind'></i></span>Typhoon
               </NavLink>
+              {/* <div className='navbar-item has-dropdown is-hoverable'>
+                <NavLink className='navbar-item' to='/typhoon' activeClassName='is-active'>
+                  <span className='navbar-icon has-text-primary'><i className='fas fa-wind'></i></span>Typhoon
+                </NavLink>
+                <div className='navbar-dropdown'>
+                  <a className='navbar-item'>Current storms</a>
+                </div>
+              </div> */}
               <NavLink className='navbar-item' to='/about' activeClassName='is-active'>
                 <span className='navbar-icon has-text-info'><i className='fas fa-lightbulb'></i></span>About
               </NavLink>

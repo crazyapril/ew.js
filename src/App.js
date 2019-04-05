@@ -6,7 +6,7 @@ import page404 from "./pages/404";
 import BlogPage from './pages/blog/page';
 import Article from './pages/blog/article';
 import WeatherPage from './pages/weather/page';
-import SatellitePage from './pages/satellite/page';
+import TCPage from './pages/tc/tc';
 import NoticeBanner from './components/notice';
 import 'bulma/css/bulma.css';
 import './styles/main.css';
@@ -38,7 +38,8 @@ class App extends Component {
                 <Route path='/weather' component={WeatherPage} />
                 <Redirect from='/windygram' to='/weather' />
                 <Redirect from='/home' exact to='/' />
-                <Route path='/satellite' component={SatellitePage} />
+                <Route path='/typhoon' component={TCPage} />
+                <Redirect from='/satellite' to='/typhoon' />
                 <Route path='/about' component={devpage} />
                 <Route path='/blog/:pk' component={({match}) => <Article pk={match.params.pk}/>} />
                 <Route component={page404} />

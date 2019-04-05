@@ -15,8 +15,7 @@ export default class SatellitePage extends Component {
     ));
 
     this.state = {
-      imagePath: this.getImagePath(this.imageTypes[0].val),
-      serviceStatus: false
+      imagePath: this.getImagePath(this.imageTypes[0].val)
     };
 
     this.handleClick = this.handleClick.bind(this);
@@ -26,20 +25,12 @@ export default class SatellitePage extends Component {
   getImagePath(imageType) {
     imageType = imageType.toLowerCase().replace('vis', 'b3').replace('ir', 'b13')
                          .replace('wv', 'b8').replace('-', '');
-    return '/media/latest/sate/' + imageType + '.png';
+    if (this.props.code === 'target') return '/media/latest/sate/' + imageType + '.png';
+    else return `/media/lastest/sate/${this.props.code}_${imageType}.png`;
   }
 
   handleClick(i, val) {
     this.setState({imagePath: this.getImagePath(val)});
-  }
-
-  componentDidMount() {
-    Axios.post(
-      '/action/satellite/service',
-      {}
-    ).then(response => {
-      this.setState({serviceStatus: response.data.status});
-    });
   }
 
   render() {
@@ -56,20 +47,7 @@ export default class SatellitePage extends Component {
         <div className='column is-8'>
           <ImageBox src={this.state.imagePath} width={720} />
         </div>
-        <div className='column is-2'>
-            <div className={classnames([
-              'span-full',
-              'has-text-centered',
-              'is-size-6',
-              this.state.serviceStatus ? 'has-background-primary' : 'has-background-grey-light'
-            ])}>
-              <p>{this.state.serviceStatus ? 'Service ON' : 'Service OFF'}</p>
-            </div>
-            <div className='span-full has-background-white-ter has-text-black is-size-6'>
-              <p>Himawari-8 target area imagery. The service will be turned on when active cyclone activity is observed in the Western Pacific.
-              </p>
-            </div>
-        </div>
+        <div className='column is-2'></div>
       </div>
     )
   }
