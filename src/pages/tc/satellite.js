@@ -1,8 +1,6 @@
 import React, { Component } from 'react'
 import PanelList from '../../components/panellist';
 import ImageBox from '../../components/imagebox';
-import classnames from 'classnames';
-import Axios from '../../components/_axios';
 import './satellite.css';
 
 export default class SatellitePage extends Component {
@@ -45,7 +43,7 @@ export default class SatellitePage extends Component {
           />
         </div>
         <div className='column is-8'>
-          <ImageBox src={this.state.imagePath} width={720} />
+          <ImageBox src={this.state.imagePath} />
         </div>
         <div className='column is-2'></div>
       </div>

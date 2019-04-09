@@ -45,17 +45,17 @@ class Navbar extends React.Component {
               <NavLink className='navbar-item' to='/weather' activeClassName='is-active'>
                 <span className='navbar-icon has-text-danger'><i className='fas fa-umbrella'></i></span>Weather
               </NavLink>
-              <NavLink className='navbar-item' to='/typhoon' activeClassName='is-active'>
-                <span className='navbar-icon has-text-primary'><i className='fas fa-wind'></i></span>Typhoon
-              </NavLink>
-              {/* <div className='navbar-item has-dropdown is-hoverable'>
+              <div className='navbar-item has-dropdown is-hoverable'>
                 <NavLink className='navbar-item' to='/typhoon' activeClassName='is-active'>
-                  <span className='navbar-icon has-text-primary'><i className='fas fa-wind'></i></span>Typhoon
+                  <span className='navbar-icon has-text-primary'><i className='fab fa-superpowers'></i></span>
+                  Typhoon
+                  <span><i className='fas fa-angle-down navbar-icon' style={{marginLeft: '8px'}}></i></span>
                 </NavLink>
                 <div className='navbar-dropdown'>
-                  <a className='navbar-item'>Current storms</a>
+                  <NavLink className='navbar-item' to='/typhoon'>Current storms</NavLink>
+                  <NavLink className='navbar-item' to='/typhoon/ensemble'>ECMWF Ensemble</NavLink>
                 </div>
-              </div> */}
+              </div>
               <NavLink className='navbar-item' to='/about' activeClassName='is-active'>
                 <span className='navbar-icon has-text-info'><i className='fas fa-lightbulb'></i></span>About
               </NavLink>

@@ -4,6 +4,7 @@ import { Link, Route } from 'react-router-dom';
 import ImageBox from '../../components/imagebox';
 import Axios from '../../components/_axios';
 import SatellitePage from './satellite';
+import EnsemblePage from './ensemble';
 
 
 class TCImageBox extends Component {
@@ -138,6 +139,7 @@ export default class TCPage extends Component {
           path={`${match.path}/satellite/:code/`}
           render={({match}) => (<SatellitePage code={match.params.code} />)}
         />
+        <Route path={`${match.path}/ensemble/`} render={() => (<EnsemblePage />)} />
       </div>
     )
   }
