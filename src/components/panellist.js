@@ -22,16 +22,28 @@ class PanelList extends Component {
   render() {
     return (
       <div className='level'>
-        <nav className='nav-choice'>
+        <nav>
           <p className='heading'>{this.props.heading}</p>
-          {this.props.entries.map((item, i) =>
-            <a
-              key={i.toString()}
-              className={classnames({'is-active': i === this.state.activeIndex})}
-              disabled={item.disabled}
-              onClick={() => this.handleClick(i, item.val)}
-            >{item.val}</a>
-          )}
+          <div className='nav-choice is-hidden-mobile'>
+            {this.props.entries.map((item, i) =>
+              <a
+                key={i.toString()}
+                className={classnames({'is-active': i === this.state.activeIndex})}
+                disabled={item.disabled}
+                onClick={() => this.handleClick(i, item.val)}
+              >{item.val}</a>
+            )}
+          </div>
+          <div className='nav-choice-mobile is-hidden-tablet is-grouped is-grouped-multiline tags'>
+            {this.props.entries.map((item, i) =>
+              <a
+                key={i.toString()}
+                className={classnames({'is-active': i === this.state.activeIndex})}
+                disabled={item.disabled}
+                onClick={() => this.handleClick(i, item.val)}
+              >{item.val}</a>
+            )}
+          </div>
         </nav>
       </div>
     )
