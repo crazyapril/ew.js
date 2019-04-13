@@ -52,8 +52,10 @@ class Navbar extends React.Component {
                   <span><i className='fas fa-angle-down navbar-icon' style={{marginLeft: '8px'}}></i></span>
                 </NavLink>
                 <div className='navbar-dropdown'>
-                  <NavLink className='navbar-item' to='/typhoon'>Current storms</NavLink>
+                  <NavLink className='navbar-item' to='/typhoon'>Current Storms</NavLink>
                   <NavLink className='navbar-item' to='/typhoon/ensemble'>ECMWF Ensemble</NavLink>
+                  <NavLink className='navbar-item' to='/typhoon/sst'>Sea Surface Temperature</NavLink>
+                  <NavLink className='navbar-item' to='/typhoon/satellite/target'>H-8 Target Area Imagery</NavLink>
                 </div>
               </div>
               <NavLink className='navbar-item' to='/about' activeClassName='is-active'>

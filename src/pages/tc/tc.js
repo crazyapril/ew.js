@@ -5,6 +5,7 @@ import ImageBox from '../../components/imagebox';
 import Axios from '../../components/_axios';
 import SatellitePage from './satellite';
 import EnsemblePage from './ensemble';
+import SSTPage from './sst';
 
 
 class TCImageBox extends Component {
@@ -136,10 +137,11 @@ export default class TCPage extends Component {
       <div>
         <Route path={`${match.path}/`} exact component={TCIndexPage} />
         <Route
-          path={`${match.path}/satellite/:code/`}
+          path={`${match.path}/satellite/:code`}
           render={({match}) => (<SatellitePage code={match.params.code} />)}
         />
-        <Route path={`${match.path}/ensemble/`} render={() => (<EnsemblePage />)} />
+        <Route path={`${match.path}/ensemble`} render={() => (<EnsemblePage />)} />
+        <Route path={`${match.path}/sst`} render={() => (<SSTPage />)} />
       </div>
     )
   }

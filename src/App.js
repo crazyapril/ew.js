@@ -8,7 +8,6 @@ import Article from './pages/blog/article';
 import WeatherPage from './pages/weather/page';
 import TCPage from './pages/tc/tc';
 import NoticeBanner from './components/notice';
-import 'bulma/css/bulma.css';
 import './styles/main.css';
 
 class App extends Component {
