@@ -119,10 +119,20 @@ class TCIndexPage extends Component {
           <TCImageBox />
         </div>
         <div className='column is-6'>
-          {this.state.storms.map(storm => (
-            <StormEntry {...storm} />
-          ))
-          }
+          <div>
+            {this.state.storms.length === 0 && (
+              <p>
+                <span className='navbar-icon'><i className='fas fa-umbrella-beach'></i></span>
+                No active storms... Time to have a break.
+              </p>
+            )}
+          </div>
+          <div>
+            {this.state.storms.map(storm => (
+              <StormEntry {...storm} />
+            ))
+            }
+          </div>
         </div>
       </div>
     )
