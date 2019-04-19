@@ -60,7 +60,8 @@ export default class EnsemblePage extends Component {
   handleDropdownSelect(i, val) {
     if (val === this.state.nowtime) return;
     let stormsel = this.state.stormsel;
-    if (this.state.storms[i].storms.indexOf(stormsel) === -1) stormsel = this.basin_full[0];
+    if (this.state.storms[i].storms.indexOf(stormsel) === -1 &&
+      this.basin_full.indexOf(stormsel) === -1) stormsel = this.basin_full[0];
     this.setState({timesel:i, nowtime:val, stormsel:stormsel});
   }
 
