@@ -58,8 +58,8 @@ class Navbar extends React.Component {
                   <NavLink className='navbar-item' to='/typhoon/satellite/target'>H-8 Target Area Imagery</NavLink>
                 </div>
               </div>
-              <NavLink className='navbar-item' to='/about' activeClassName='is-active'>
-                <span className='navbar-icon has-text-info'><i className='fas fa-lightbulb'></i></span>About
+              <NavLink className='navbar-item' to='/model' activeClassName='is-active'>
+                <span className='navbar-icon has-text-info'><i className='fas fa-globe-asia'></i></span>Model
               </NavLink>
             </div>
           </div>

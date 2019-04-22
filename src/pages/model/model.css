@@ -1,0 +1,71 @@
+.btn-hour {
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 2.5rem;
+  cursor: pointer !important;
+  background-color: #fdfdfd;
+}
+
+.btn-hour.btn-loaded {
+  color: #ea1044;
+  border-color: #ea1044;
+}
+
+.btn-hour.btn-loaded:hover {
+  border-color: #c00000
+}
+
+.btn-hour.btn-loaded:active {
+  border-color: #900000
+}
+
+.btn-hour.btn-active {
+  background-color: #ea1044;
+  border-color: #ea1044;
+  color: white
+}
+
+.is-theme-colored {
+  border-color: #ea1044;
+  color: #ea1044;
+  font-family: 'Lato';
+}
+
+.is-theme-colored.is-active {
+  background-color: #ea1044;
+  border-color: #ea1044;
+  color: white
+}
+
+.is-theme-colored:hover {
+  background-color: #ea1044;
+  border-color: #ea1044;
+  color: white
+}
+
+.height-container {
+  margin-bottom: 1.5rem;
+}
+
+@media screen and (min-width: 1088px) {
+  .height-container {
+    min-height: 25rem;
+  }
+}
+
+.modal-bottom {
+  width: 100%;
+  max-height: 80%;
+  bottom: 0;
+  position: fixed;
+  margin: 0;
+}
+
+.modal-heading {
+  font-family: 'Lato';
+  font-weight: 900;
+}
+
+.box.better-border {
+  border-radius: 16px 16px 0 0;
+}

@@ -5,6 +5,7 @@ import devpage from "./pages/devpage";
 import page404 from "./pages/404";
 import BlogPage from './pages/blog/page';
 import Article from './pages/blog/article';
+import ModelPage from './pages/model/page';
 import WeatherPage from './pages/weather/page';
 import TCPage from './pages/tc/tc';
 import NoticeBanner from './components/notice';
@@ -38,6 +39,7 @@ class App extends Component {
                 <Redirect from='/windygram' to='/weather' />
                 <Redirect from='/home' exact to='/' />
                 <Route path='/typhoon' component={TCPage} />
+                <Route path='/model' component={ModelPage} />
                 <Redirect from='/satellite' to='/typhoon' />
                 <Route path='/about' component={devpage} />
                 <Route path='/blog/:pk' component={({match}) => <Article pk={match.params.pk}/>} />
