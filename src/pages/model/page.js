@@ -36,12 +36,12 @@ export default class ModelPage extends Component {
 
     this.state = {
       models: ['ecmwf'],
-      regions: ['china', 'asia'],
-      codes: [{'code': 'GPT', 'name': '850hPa Temp & Wind'}],
+      regions: ['China', 'Asia'],
+      codes: [{'code': 'GPT', 'name': '850hPa Temp & 500hPa Height'}],
       modelsel: 'ecmwf',
-      regionsel: 'asia',
+      regionsel: 'Asia',
       codesel: 'GPT',
-      namesel: '850hPa Temp & Wind',
+      namesel: '850hPa Temp & 500hPa Height',
       status: [{'time':'', 'ticks':[], 'pending':[], 'updating':false}],
       timesel: '',
       timeidx: 0,
@@ -61,6 +61,7 @@ export default class ModelPage extends Component {
     this.loadImages = this.loadImages.bind(this);
     this.getImagePath = this.getImagePath.bind(this);
     this.refreshStatus = this.refreshStatus.bind(this);
+    this.keydownEvent = this.keydownEvent.bind(this);
   }
 
   componentDidMount() {
@@ -83,7 +84,17 @@ export default class ModelPage extends Component {
       this.setState({status: res.data, timesel: res.data[0].time});
       this.loadImages();
     });
-    if (this.state.status[this.state.timeidx].updating) setInterval(this.update, 1000*60);
+    if (this.state.status[this.state.timeidx].updating) this.updating_timer = setInterval(this.update, 1000*60);
+    document.addEventListener('keydown', this.keydownEvent, false);
+  }
+
+  componentWillUnmount() {
+    document.removeEventListener('keydown', this.keydownEvent, false);
+  }
+
+  keydownEvent(e) {
+    if (e.keyCode === 37) this.moveActiveHour(-1); // left
+    else if (e.keyCode === 39) this.moveActiveHour(1); // right
   }
 
   moveActiveHour(move, cycle) {
@@ -107,8 +118,7 @@ export default class ModelPage extends Component {
       {model: modelsel, region: regionsel, code: codesel}
     ).then(res => {
       if (res.data[this.state.timeidx].pending.includes(this.state.activeHour)) this.setState({activeHour: 0});
-      this.setState({status: res.data});
-      this.loadImages();
+      this.setState({status: res.data}, this.loadImages);
     });
   }
 
@@ -129,8 +139,7 @@ export default class ModelPage extends Component {
         img.src = this.getImagePath(this.state.modelsel, this.state.timesel,
           this.state.codesel, this.state.regionsel, status.ticks[i]);
         img.onload = () => {
-          this.setState(prev => ({loaded: [...prev.loaded, status.ticks[i]]}));
-          this.loadImages();
+          this.setState(prev => ({loaded: [...prev.loaded, status.ticks[i]]}), this.loadImages);
         };
         break;
       }
@@ -139,7 +148,8 @@ export default class ModelPage extends Component {
 
   getImagePath(model, time, code, region, hour) {
     if (time === '') return '';
-    return `/media/model/${model}/${time}/${code}_${region}_${hour}.png`;
+    let _region = region.replace(/ /g, '_').replace(/&/g, '').toLowerCase();
+    return `/media/model/${model}/${time}/${code}_${_region}_${hour}.png`;
   }
 
   render() {
@@ -214,8 +224,7 @@ export default class ModelPage extends Component {
           activeEntry={this.state.modelsel}
           select={item => {
             if (this.state.modelsel === item) return;
-            this.setState({modelsel:item, modelModal:false, loaded: []});
-            this.refreshStatus(item);
+            this.setState({modelsel:item, modelModal:false, loaded: []}, this.refreshStatus);
           }}
           active={this.state.modelModal}
           close={() => {this.setState({modelModal:false})}}
@@ -226,8 +235,8 @@ export default class ModelPage extends Component {
           activeEntry={this.state.namesel}
           select={(item, i) => {
             if (this.state.namesel === item) return;
-            this.setState({namesel:item, codesel:this.state.codes[i].name, codeModal:false, loaded:[]});
-            this.refreshStatus(null, null, item);
+            this.setState({namesel:item, codesel:this.state.codes[i].code, codeModal:false,
+              loaded:[]}, this.refreshStatus);
           }}
           active={this.state.codeModal}
           close={() => {this.setState({codeModal:false})}}
@@ -253,8 +262,16 @@ export default class ModelPage extends Component {
                         style={{marginTop:'.5rem'}}
                         onClick={() => {
                           if (this.state.regionsel === region) return;
-                          this.setState({regionsel:region, regionModal:false, loaded:[]});
-                          this.refreshStatus(null, region);
+                          this.setState({regionModal: false});
+                          Axios.post(
+                            '/action/model/codes',
+                            {model: this.state.modelsel, region: region}
+                          ).then(res => {
+                            let _codes = res.data.map(item => (item.code)), new_state;
+                            if (!_codes.includes(this.state.codesel)) new_state = {codesel: _codes[0], namesel: res.data[0].name};
+                            else new_state = {};
+                            this.setState({codes: res.data, regionsel:region, loaded:[], ...new_state}, this.refreshStatus);
+                          });
                         }}
                       >{region.toUpperCase()}</a>
                     </div>
