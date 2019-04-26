@@ -1,6 +1,7 @@
 import classnames from 'classnames';
 import React, { Component } from 'react';
 import ImageBox from '../../components/imagebox';
+import { Redirect, Route } from 'react-router-dom';
 import Axios from '../../components/_axios';
 import './model.css';
 
@@ -29,18 +30,18 @@ function CommonModal(props) {
   );
 }
 
-export default class ModelPage extends Component {
+class ModelContent extends Component {
 
   constructor(props) {
-    super(props)
+    super(props);
 
     this.state = {
       models: ['ecmwf'],
       regions: ['China', 'Asia'],
       codes: [{'code': 'GPT', 'name': '850hPa Temp & 500hPa Height'}],
-      modelsel: 'ecmwf',
-      regionsel: 'Asia',
-      codesel: 'GPT',
+      modelsel: this.props.match.params.model,
+      regionsel: this.props.match.params.region,
+      codesel: this.props.match.params.code,
       namesel: '850hPa Temp & 500hPa Height',
       status: [{'time':'', 'ticks':[], 'pending':[], 'updating':false}],
       timesel: '',
@@ -62,6 +63,7 @@ export default class ModelPage extends Component {
     this.getImagePath = this.getImagePath.bind(this);
     this.refreshStatus = this.refreshStatus.bind(this);
     this.keydownEvent = this.keydownEvent.bind(this);
+    this.urlifyRegion = this.urlifyRegion.bind(this);
   }
 
   componentDidMount() {
@@ -69,13 +71,21 @@ export default class ModelPage extends Component {
       '/action/model/regions',
       {}
     ).then(res => {
-      this.setState({regions: res.data.regions})
+      this.setState({regions: res.data.regions});
+      for (let r of res.data.regions) if (this.urlifyRegion(r) === this.state.regionsel) {
+        this.setState({regionsel: r});
+        break;
+      }
     });
     Axios.post(
       '/action/model/codes',
       {model: this.state.modelsel, region: this.state.regionsel}
     ).then(res => {
-      this.setState({codes: res.data})
+      this.setState({codes: res.data});
+      for (let c of res.data) if (c.code.toLowerCase() === this.state.codesel) {
+        this.setState({namesel: c.name});
+        return;
+      }
     });
     Axios.post(
       '/action/model/status',
@@ -84,7 +94,6 @@ export default class ModelPage extends Component {
       this.setState({status: res.data, timesel: res.data[0].time});
       this.loadImages();
     });
-    if (this.state.status[this.state.timeidx].updating) this.updating_timer = setInterval(this.update, 1000*60);
     document.addEventListener('keydown', this.keydownEvent, false);
   }
 
@@ -118,6 +127,7 @@ export default class ModelPage extends Component {
       {model: modelsel, region: regionsel, code: codesel}
     ).then(res => {
       if (res.data[this.state.timeidx].pending.includes(this.state.activeHour)) this.setState({activeHour: 0});
+      if (res.data[this.state.timeidx].updating && this.updating_timer === null) this.updating_timer = setInterval(this.update, 1000*60);
       this.setState({status: res.data}, this.loadImages);
     });
   }
@@ -146,10 +156,13 @@ export default class ModelPage extends Component {
     }
   }
 
+  urlifyRegion(region) {
+    return region.replace(/ /g, '_').replace(/&/g, '').toLowerCase();
+  }
+
   getImagePath(model, time, code, region, hour) {
     if (time === '') return '';
-    let _region = region.replace(/ /g, '_').replace(/&/g, '').toLowerCase();
-    return `/media/model/${model}/${time}/${code}_${_region}_${hour}.png`;
+    return `/media/model/${model}/${time}/${code.toLowerCase()}_${this.urlifyRegion(region)}_${hour}.png`;
   }
 
   render() {
@@ -224,7 +237,8 @@ export default class ModelPage extends Component {
           activeEntry={this.state.modelsel}
           select={item => {
             if (this.state.modelsel === item) return;
-            this.setState({modelsel:item, modelModal:false, loaded: []}, this.refreshStatus);
+            this.setState({modelsel:item, modelModal:false, loaded: [], iterating:false}, this.refreshStatus);
+            this.props.history.push(`/model/${item}/${this.urlifyRegion(this.state.regionsel)}/${this.state.codesel}`);
           }}
           active={this.state.modelModal}
           close={() => {this.setState({modelModal:false})}}
@@ -235,8 +249,9 @@ export default class ModelPage extends Component {
           activeEntry={this.state.namesel}
           select={(item, i) => {
             if (this.state.namesel === item) return;
-            this.setState({namesel:item, codesel:this.state.codes[i].code, codeModal:false,
-              loaded:[]}, this.refreshStatus);
+            let codesel = this.state.codes[i].code.toLowerCase();
+            this.setState({namesel:item, codesel:codesel, codeModal:false, loaded:[], iterating:false}, this.refreshStatus);
+            this.props.history.push(`/model/${this.state.modelsel}/${this.urlifyRegion(this.state.regionsel)}/${codesel}`);
           }}
           active={this.state.codeModal}
           close={() => {this.setState({codeModal:false})}}
@@ -251,7 +266,7 @@ export default class ModelPage extends Component {
                   {this.state.regions.map((region, i) => (
                     <div className='column is-narrow has-text-centered' key={i.toString()}>
                       <ImageBox
-                        src={`/media/maps/${region}.png`}
+                        src={`/media/maps/${this.urlifyRegion(region)}.png`}
                         width={128}
                       />
                       <a
@@ -267,10 +282,15 @@ export default class ModelPage extends Component {
                             '/action/model/codes',
                             {model: this.state.modelsel, region: region}
                           ).then(res => {
-                            let _codes = res.data.map(item => (item.code)), new_state;
-                            if (!_codes.includes(this.state.codesel)) new_state = {codesel: _codes[0], namesel: res.data[0].name};
+                            let _codes = res.data.map(item => (item.code.toLowerCase())), new_state,
+                              code = this.state.codesel;
+                            if (!_codes.includes(this.state.codesel)) {
+                              new_state = {codesel: _codes[0], namesel: res.data[0].name};
+                              code = _codes[0];
+                            }
                             else new_state = {};
-                            this.setState({codes: res.data, regionsel:region, loaded:[], ...new_state}, this.refreshStatus);
+                            this.setState({codes: res.data, regionsel:region, loaded:[], iterating:false, ...new_state}, this.refreshStatus);
+                            this.props.history.push(`/model/${this.state.modelsel}/${this.urlifyRegion(region)}/${code}`);
                           });
                         }}
                       >{region.toUpperCase()}</a>
@@ -282,6 +302,22 @@ export default class ModelPage extends Component {
           </div>
           <button className='modal-close is-large' aria-label='close' onClick={() => {this.setState({'regionModal':false})}}></button>
         </div>
+      </div>
+    )
+  }
+}
+
+
+export default class ModelPage extends Component {
+  render() {
+    const { match } = this.props;
+    return (
+      <div>
+        <Route path={`${match.path}/`} exact render={() => <Redirect to={`${match.path}/ecmwf/asia/gpt`} />} />
+        <Route
+          path={`${match.path}/:model/:region/:code`}
+          component={ModelContent}
+        />
       </div>
     )
   }
