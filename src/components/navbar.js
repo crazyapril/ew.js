@@ -42,9 +42,16 @@ class Navbar extends React.Component {
             'is-active':this.state.toggleOn
             })}>
             <div className='navbar-start'>
-              <NavLink className='navbar-item' to='/weather' activeClassName='is-active'>
-                <span className='navbar-icon has-text-danger'><i className='fas fa-umbrella'></i></span>Weather
-              </NavLink>
+              <div className='navbar-item has-dropdown is-hoverable'>
+                <NavLink className='navbar-item' to='/weather' activeClassName='is-active'>
+                  <span className='navbar-icon has-text-danger'><i className='fas fa-umbrella'></i></span>Weather
+                  <span><i className='fas fa-angle-down navbar-icon' style={{marginLeft: '8px'}}></i></span>
+                </NavLink>
+                <div className='navbar-dropdown'>
+                  <NavLink className='navbar-item' to='/weather'>ECMWF Time Series</NavLink>
+                  <NavLink className='navbar-item' to='/weather/realtime'>Realtime Weather</NavLink>
+                </div>
+              </div>
               <div className='navbar-item has-dropdown is-hoverable'>
                 <NavLink className='navbar-item' to='/typhoon' activeClassName='is-active'>
                   <span className='navbar-icon has-text-primary'><i className='fab fa-superpowers'></i></span>

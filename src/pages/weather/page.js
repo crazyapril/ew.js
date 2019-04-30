@@ -3,6 +3,8 @@ import Autocomplete from 'react-autocomplete';
 import ImageBox from './../../components/imagebox';
 import classnames from 'classnames';
 import Axios from './../../components/_axios';
+import { Route } from 'react-router-dom';
+import RealTimeMapPage from './rtmap';
 import './weather.css';
 
 class WeatherPage extends React.Component {
@@ -114,4 +116,14 @@ class WeatherPage extends React.Component {
   }
 }
 
-export default WeatherPage;
+export default class WeatherIndexPage extends React.Component {
+  render() {
+    const { match } = this.props;
+    return (
+      <div>
+        <Route path={`${match.path}/`} exact component={WeatherPage} />
+        <Route path={`${match.path}/realtime`} component={RealTimeMapPage} />
+      </div>
+    )
+  }
+}
