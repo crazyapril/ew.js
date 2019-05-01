@@ -8,8 +8,8 @@ export default class RealTimeMapPage extends Component {
   constructor(props) {
     super(props);
 
-    this.areas = ['中国', '华南', '华东', '华北', '东南', '华中', '东北', '云贵', '川渝', '晋陕', '甘青', '新疆', '西藏'];
-    this.areaKeys = ['china', 'south', 'mideast', 'north', 'midsouth', 'central', 'northeast', 'southwest', 'midwest', 'shaanxi', 'qinghai', 'xinjiang', 'tibet'];
+    this.areas = ['中国', '华南', '华东', '华北', '东南', '台灣', '华中', '东北', '云贵', '川渝', '晋陕', '甘青', '新疆', '西藏'];
+    this.areaKeys = ['china', 'south', 'mideast', 'north', 'midsouth', 'taiwan', 'central', 'northeast', 'southwest', 'midwest', 'shaanxi', 'qinghai', 'xinjiang', 'tibet'];
 
     this.state = {
       area: this.areas[0]
