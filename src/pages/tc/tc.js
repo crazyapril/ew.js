@@ -145,13 +145,13 @@ export default class TCPage extends Component {
     const { match } = this.props;
     return (
       <div>
-        <Route path={`${match.path}/`} exact component={TCIndexPage} />
+        <Route path={`${match.path}`} exact component={TCIndexPage} />
         <Route
-          path={`${match.path}/satellite/:code`}
+          path={`${match.path}satellite/:code/`}
           render={({match}) => (<SatellitePage code={match.params.code} />)}
         />
-        <Route path={`${match.path}/ensemble`} render={() => (<EnsemblePage />)} />
-        <Route path={`${match.path}/sst`} render={() => (<SSTPage />)} />
+        <Route path={`${match.path}ensemble/`} render={() => (<EnsemblePage />)} />
+        <Route path={`${match.path}sst/`} render={() => (<SSTPage />)} />
       </div>
     )
   }

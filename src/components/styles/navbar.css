@@ -6,6 +6,10 @@
   margin-right: 8px;
 }
 
+.navbar-item {
+  font-family: 'Lato'
+}
+
 /* @media screen and (min-width: 1088px) {
   .navbar-item img {
     max-height: 2.8rem !important;

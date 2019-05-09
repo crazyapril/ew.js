@@ -313,9 +313,9 @@ export default class ModelPage extends Component {
     const { match } = this.props;
     return (
       <div>
-        <Route path={`${match.path}/`} exact render={() => <Redirect to={`${match.path}/ecmwf/asia/gpt`} />} />
+        <Route path={`${match.path}`} exact render={() => <Redirect to={`${match.path}/ecmwf/asia/gpt/`} />} />
         <Route
-          path={`${match.path}/:model/:region/:code`}
+          path={`${match.path}/:model/:region/:code/`}
           component={ModelContent}
         />
       </div>

@@ -121,8 +121,8 @@ export default class WeatherIndexPage extends React.Component {
     const { match } = this.props;
     return (
       <div>
-        <Route path={`${match.path}/`} exact component={WeatherPage} />
-        <Route path={`${match.path}/realtime`} component={RealTimeMapPage} />
+        <Route path={`${match.path}`} exact component={WeatherPage} />
+        <Route path={`${match.path}realtime/`} component={RealTimeMapPage} />
       </div>
     )
   }
