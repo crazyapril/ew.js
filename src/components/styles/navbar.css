@@ -10,6 +10,12 @@
   font-family: 'Lato'
 }
 
+.is-theme-colored.is-loading::after {
+  border: 2px solid #ea1044;
+  border-right-color: transparent;
+  border-top-color: transparent;
+}
+
 /* @media screen and (min-width: 1088px) {
   .navbar-item img {
     max-height: 2.8rem !important;

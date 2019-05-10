@@ -238,7 +238,7 @@ class ModelContent extends Component {
           select={item => {
             if (this.state.modelsel === item) return;
             this.setState({modelsel:item, modelModal:false, loaded: [], iterating:false}, this.refreshStatus);
-            this.props.history.push(`/model/${item}/${this.urlifyRegion(this.state.regionsel)}/${this.state.codesel}`);
+            this.props.history.push(`/model/${item}/${this.urlifyRegion(this.state.regionsel)}/${this.state.codesel}/`);
           }}
           active={this.state.modelModal}
           close={() => {this.setState({modelModal:false})}}
@@ -251,7 +251,7 @@ class ModelContent extends Component {
             if (this.state.namesel === item) return;
             let codesel = this.state.codes[i].code.toLowerCase();
             this.setState({namesel:item, codesel:codesel, codeModal:false, loaded:[], iterating:false}, this.refreshStatus);
-            this.props.history.push(`/model/${this.state.modelsel}/${this.urlifyRegion(this.state.regionsel)}/${codesel}`);
+            this.props.history.push(`/model/${this.state.modelsel}/${this.urlifyRegion(this.state.regionsel)}/${codesel}/`);
           }}
           active={this.state.codeModal}
           close={() => {this.setState({codeModal:false})}}
@@ -290,7 +290,7 @@ class ModelContent extends Component {
                             }
                             else new_state = {};
                             this.setState({codes: res.data, regionsel:region, loaded:[], iterating:false, ...new_state}, this.refreshStatus);
-                            this.props.history.push(`/model/${this.state.modelsel}/${this.urlifyRegion(region)}/${code}`);
+                            this.props.history.push(`/model/${this.state.modelsel}/${this.urlifyRegion(region)}/${code}/`);
                           });
                         }}
                       >{region.toUpperCase()}</a>
@@ -313,9 +313,9 @@ export default class ModelPage extends Component {
     const { match } = this.props;
     return (
       <div>
-        <Route path={`${match.path}`} exact render={() => <Redirect to={`${match.path}/ecmwf/asia/gpt/`} />} />
+        <Route path={`${match.path}`} exact render={() => <Redirect to={`${match.path}ecmwf/asia/gpt/`} />} />
         <Route
-          path={`${match.path}/:model/:region/:code/`}
+          path={`${match.path}:model/:region/:code/`}
           component={ModelContent}
         />
       </div>

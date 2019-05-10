@@ -14,6 +14,8 @@ class Navbar extends React.Component {
       loginModal: false,
       logined: false,
       loginError: false,
+      loginMessage: '',
+      logining: false,
       loginedUser: '',
       loginUsername: '',
       loginPassword: ''
@@ -31,12 +33,18 @@ class Navbar extends React.Component {
   }
 
   login() {
+    if (this.state.loginUsername === '' || this.state.loginPassword === '') {
+      this.setState({loginError:true, loginMessage:'Username or password should not be empty.'})
+      return;
+    }
+    this.setState({logining: true})
     Axios.post(
       '/action/user/login',
       {username: this.state.loginUsername, password: this.state.loginPassword}
     ).then(res => {
+      this.setState({logining: false})
       if (res.data.logined) this.setState({loginModal:false, logined:true, loginedUser:res.data.username, loginError:false})
-      else this.setState({loginError:true});
+      else this.setState({loginError:true, loginMessage:'Wrong username or password.'});
     })
   }
 
@@ -111,7 +119,7 @@ class Navbar extends React.Component {
             <div className='navbar-end'>
               { !this.state.logined && (
                 <div className='navbar-item'>
-                  <a className='button is-rounded' onClick={() => {this.setState({loginModal: true})}}>
+                  <a className='button is-rounded' onClick={() => {this.setState({loginModal: true, loginError: false})}}>
                     <span className='navbar-icon'><i className='fas fa-plus'></i></span>Login
                   </a>
                 </div>
@@ -145,7 +153,7 @@ class Navbar extends React.Component {
                   </span>
                 </p>
                 { this.state.loginError && (
-                  <p className='help is-danger'>Wrong username or password.</p>
+                  <p className='help is-danger'>{ this.state.loginMessage }</p>
                 )}
               </div>
               <div className="field">
@@ -157,9 +165,10 @@ class Navbar extends React.Component {
                   </span>
                 </p>
               </div>
-              <div className='has-text-centered is-fullwidth'>
+              <div className='has-text-centered is-fullwidth' style={{marginTop:'2rem'}}>
                 <button className={classnames({
-                  'button': true, 'is-rounded': true, 'is-theme-colored': true
+                  'button': true, 'is-rounded': true, 'is-theme-colored': true,
+                  'is-fullwidth': true, 'is-loading': this.state.logining
                 })} onClick={() => {this.login()}}>Login</button>
               </div>
             </div>
