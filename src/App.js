@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { createStore } from '@spyna/react-store';
 import {BrowserRouter, Redirect, Route, Switch} from 'react-router-dom';
 import Navbar from "./components/navbar.js";
 import devpage from "./pages/devpage";
@@ -52,4 +53,10 @@ class App extends Component {
   }
 }
 
-export default App;
+const initialValue = {
+  userLogined: false,
+  userName: '',
+  userPlevel: 0
+}
+
+export default createStore(App, initialValue);

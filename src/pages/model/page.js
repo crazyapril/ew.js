@@ -38,7 +38,7 @@ class ModelContent extends Component {
     this.state = {
       models: ['ecmwf'],
       regions: ['China', 'Asia'],
-      codes: [{'code': 'GPT', 'name': '850hPa Temp & 500hPa Height'}],
+      codes: [{'code': 'GPT', 'name': '850hPa Temp & 500hPa Height', 'protected': false}],
       modelsel: this.props.match.params.model,
       regionsel: this.props.match.params.region,
       codesel: this.props.match.params.code,
@@ -51,7 +51,8 @@ class ModelContent extends Component {
       iterating: false,
       modelModal: false,
       regionModal: false,
-      codeModal: false
+      codeModal: false,
+      imgProtected: false
     }
 
     this.iterating_timer = null;
@@ -82,17 +83,21 @@ class ModelContent extends Component {
       {model: this.state.modelsel, region: this.state.regionsel}
     ).then(res => {
       this.setState({codes: res.data});
-      for (let c of res.data) if (c.code.toLowerCase() === this.state.codesel) {
-        this.setState({namesel: c.name});
-        return;
-      }
-    });
-    Axios.post(
-      '/action/model/status',
-      {model: this.state.modelsel, region: this.state.regionsel, code: this.state.codesel}
-    ).then(res => {
-      this.setState({status: res.data, timesel: res.data[0].time});
-      this.loadImages();
+      let allcodes = res.data.map(c => (c.code.toLowerCase()));
+      let nowcode = this.state.codesel;
+      let codeidx = allcodes.indexOf(nowcode);
+      if (codeidx === -1) {
+        nowcode = res.data[0].code.toLowerCase();
+        this.setState({codesel: nowcode, namesel: res.data[0].name, imgProtected: res.data[0].protected});
+        this.props.history.push(`/model/${this.state.modelsel}/${this.urlifyRegion(this.state.regionsel)}/${nowcode}/`);
+      } else this.setState({namesel: res.data[codeidx].name, imgProtected: res.data[codeidx].protected});
+      Axios.post(
+        '/action/model/status',
+        {model: this.state.modelsel, region: this.state.regionsel, code: nowcode}
+      ).then(res => {
+        this.setState({status: res.data, timesel: res.data[0].time});
+        this.loadImages();
+      });
     });
     document.addEventListener('keydown', this.keydownEvent, false);
   }
@@ -147,7 +152,7 @@ class ModelContent extends Component {
       if (!this.state.loaded.includes(status.ticks[i])) {
         const img = new Image();
         img.src = this.getImagePath(this.state.modelsel, this.state.timesel,
-          this.state.codesel, this.state.regionsel, status.ticks[i]);
+          this.state.codesel, this.state.regionsel, status.ticks[i], this.state.imgProtected);
         img.onload = () => {
           this.setState(prev => ({loaded: [...prev.loaded, status.ticks[i]]}), this.loadImages);
         };
@@ -160,14 +165,16 @@ class ModelContent extends Component {
     return region.replace(/ /g, '_').replace(/&/g, '').toLowerCase();
   }
 
-  getImagePath(model, time, code, region, hour) {
+  getImagePath(model, time, code, region, hour, protect) {
     if (time === '') return '';
-    return `/media/model/${model}/${time}/${code.toLowerCase()}_${this.urlifyRegion(region)}_${hour}.png`;
+    let s = `/model/${model}/${time}/${code.toLowerCase()}_${this.urlifyRegion(region)}_${hour}.png`;
+    if (protect) return '/protected' + s;
+    else return '/media' + s;
   }
 
   render() {
     const imgSrc = this.getImagePath(this.state.modelsel, this.state.timesel,
-      this.state.codesel, this.state.regionsel, this.state.activeHour);
+      this.state.codesel, this.state.regionsel, this.state.activeHour, this.state.imgProtected);
     const status = this.state.status[this.state.timeidx];
     if (this.state.iterating && this.iterating_timer === null) this.iterating_timer = setInterval(() => {this.moveActiveHour(1, true)}, 600);
     else if (!this.state.iterating && this.iterating_timer !== null) {clearInterval(this.iterating_timer); this.iterating_timer = null;}
@@ -250,7 +257,7 @@ class ModelContent extends Component {
           select={(item, i) => {
             if (this.state.namesel === item) return;
             let codesel = this.state.codes[i].code.toLowerCase();
-            this.setState({namesel:item, codesel:codesel, codeModal:false, loaded:[], iterating:false}, this.refreshStatus);
+            this.setState({namesel:item, codesel:codesel, codeModal:false, loaded:[], iterating:false, imgProtected:this.state.codes[i].protected}, this.refreshStatus);
             this.props.history.push(`/model/${this.state.modelsel}/${this.urlifyRegion(this.state.regionsel)}/${codesel}/`);
           }}
           active={this.state.codeModal}
@@ -282,13 +289,15 @@ class ModelContent extends Component {
                             '/action/model/codes',
                             {model: this.state.modelsel, region: region}
                           ).then(res => {
-                            let _codes = res.data.map(item => (item.code.toLowerCase())), new_state,
-                              code = this.state.codesel;
-                            if (!_codes.includes(this.state.codesel)) {
-                              new_state = {codesel: _codes[0], namesel: res.data[0].name};
-                              code = _codes[0];
+                            let new_state, code = res.data[0].code.toLowerCase();
+                            new_state = {codesel: code, namesel: res.data[0].name, imgProtected: res.data[0].protected};
+                            for (let i of res.data) {
+                              if (i.code.toLowerCase() === this.state.codesel) {
+                                new_state = {imgProtected: i.protected};
+                                code = this.state.codesel;
+                                break;
+                              }
                             }
-                            else new_state = {};
                             this.setState({codes: res.data, regionsel:region, loaded:[], iterating:false, ...new_state}, this.refreshStatus);
                             this.props.history.push(`/model/${this.state.modelsel}/${this.urlifyRegion(region)}/${code}/`);
                           });
@@ -313,7 +322,7 @@ export default class ModelPage extends Component {
     const { match } = this.props;
     return (
       <div>
-        <Route path={`${match.path}`} exact render={() => <Redirect to={`${match.path}ecmwf/asia/gpt/`} />} />
+        <Route path={`${match.path}`} exact render={() => <Redirect to={`${match.path}ecmwf/china/gpt/`} />} />
         <Route
           path={`${match.path}:model/:region/:code/`}
           component={ModelContent}

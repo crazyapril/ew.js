@@ -1,5 +1,6 @@
 import classnames from 'classnames';
 import React from 'react';
+import { withStore } from '@spyna/react-store';
 import { Link, NavLink } from 'react-router-dom';
 import './styles/navbar.css';
 import Axios from '../components/_axios';
@@ -12,11 +13,9 @@ class Navbar extends React.Component {
     this.state = {
       toggleOn: false,
       loginModal: false,
-      logined: false,
       loginError: false,
       loginMessage: '',
       logining: false,
-      loginedUser: '',
       loginUsername: '',
       loginPassword: ''
     };
@@ -43,8 +42,12 @@ class Navbar extends React.Component {
       {username: this.state.loginUsername, password: this.state.loginPassword}
     ).then(res => {
       this.setState({logining: false})
-      if (res.data.logined) this.setState({loginModal:false, logined:true, loginedUser:res.data.username, loginError:false})
-      else this.setState({loginError:true, loginMessage:'Wrong username or password.'});
+      if (res.data.logined) {
+        this.setState({loginModal:false, loginError:false});
+        this.props.store.set('userLogined', true);
+        this.props.store.set('userName', res.data.username);
+        this.props.store.set('userPlevel', res.data.plevel);
+      } else this.setState({loginError:true, loginMessage:'Wrong username or password.'});
     })
   }
 
@@ -53,7 +56,9 @@ class Navbar extends React.Component {
       '/action/user/logout',
       {}
     ).then(res => {
-      this.setState({logined:false, loginedUser:''})
+      this.props.store.set('userLogined', false);
+      this.props.store.set('userName', '');
+      this.props.store.set('userPlevel', 0);
     })
   }
 
@@ -62,7 +67,11 @@ class Navbar extends React.Component {
       '/action/user/check',
       {}
     ).then(res => {
-      if (res.data.logined) this.setState({logined:true, loginedUser:res.data.username})
+      if (res.data.logined) {
+        this.props.store.set('userLogined', true);
+        this.props.store.set('userName', res.data.username);
+        this.props.store.set('userPlevel', res.data.plevel);
+      }
     })
   }
 
@@ -96,7 +105,9 @@ class Navbar extends React.Component {
                 </NavLink>
                 <div className='navbar-dropdown'>
                   <NavLink className='navbar-item' to='/weather/'>ECMWF Time Series</NavLink>
-                  <NavLink className='navbar-item' to='/weather/realtime/'>Realtime Weather</NavLink>
+                  { this.props.store.get('userPlevel') > 0 && (
+                    <NavLink className='navbar-item' to='/weather/realtime/'>Realtime Weather</NavLink>
+                  )}
                 </div>
               </div>
               <div className='navbar-item has-dropdown is-hoverable'>
@@ -117,18 +128,18 @@ class Navbar extends React.Component {
               </NavLink>
             </div>
             <div className='navbar-end'>
-              { !this.state.logined && (
+              { !this.props.store.get('userLogined') && (
                 <div className='navbar-item'>
                   <a className='button is-rounded' onClick={() => {this.setState({loginModal: true, loginError: false})}}>
                     <span className='navbar-icon'><i className='fas fa-plus'></i></span>Login
                   </a>
                 </div>
               )}
-              { this.state.logined && (
+              { this.props.store.get('userLogined') && (
                 <div className='navbar-item is-hoverable has-dropdown'>
                   <a className='navbar-item'>
                     <span className='navbar-icon'><i className='fas fa-user-circle'></i></span>
-                    { this.state.loginedUser }
+                    { this.props.store.get('userName') }
                     <span><i className='fas fa-angle-down navbar-icon' style={{marginLeft: '8px'}}></i></span>
                   </a>
                   <div className='navbar-dropdown'>
@@ -181,4 +192,4 @@ class Navbar extends React.Component {
 
 }
 
-export default Navbar;
+export default withStore(Navbar);

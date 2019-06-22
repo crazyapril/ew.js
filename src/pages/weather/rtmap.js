@@ -20,7 +20,7 @@ export default class RealTimeMapPage extends Component {
     const entries = this.areas.map(val => ({val: val, disabled: false}));
     let imagePath;
     if (this.state.area === '') imagePath = '';
-    else imagePath = `/media/latest/weather/realtime/temp_${this.areaKeys[this.areas.indexOf(this.state.area)]}.png`;
+    else imagePath = `/protected/latest/weather/realtime/temp_${this.areaKeys[this.areas.indexOf(this.state.area)]}.png`;
     return (
       <div className='columns'>
         <div className='column is-2'>
