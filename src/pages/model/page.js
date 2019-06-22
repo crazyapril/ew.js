@@ -87,17 +87,16 @@ class ModelContent extends Component {
       let nowcode = this.state.codesel;
       let codeidx = allcodes.indexOf(nowcode);
       if (codeidx === -1) {
-        nowcode = res.data[0].code.toLowerCase();
-        this.setState({codesel: nowcode, namesel: res.data[0].name, imgProtected: res.data[0].protected});
-        this.props.history.push(`/model/${this.state.modelsel}/${this.urlifyRegion(this.state.regionsel)}/${nowcode}/`);
+        this.props.history.push(`/model/ecmwf/china/gpt/`);
+        window.location.reload();
       } else this.setState({namesel: res.data[codeidx].name, imgProtected: res.data[codeidx].protected});
-      Axios.post(
-        '/action/model/status',
-        {model: this.state.modelsel, region: this.state.regionsel, code: nowcode}
-      ).then(res => {
-        this.setState({status: res.data, timesel: res.data[0].time});
-        this.loadImages();
-      });
+    });
+    Axios.post(
+      '/action/model/status',
+      {model: this.state.modelsel, region: this.state.regionsel, code: this.state.codesel}
+    ).then(res => {
+      this.setState({status: res.data, timesel: res.data[0].time});
+      this.loadImages();
     });
     document.addEventListener('keydown', this.keydownEvent, false);
   }

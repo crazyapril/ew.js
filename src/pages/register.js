@@ -188,8 +188,10 @@ export default class RegisterPage extends Component {
             </div>
             <div className='has-text-centered is-fullwidth'>
               <button className={classnames({
-                'button': true, 'is-rounded': true, 'is-theme-colored': true,
-                'is-loading': this.state.registerStatus === 1
+                'button': true, 'is-rounded': true,
+                'is-theme-colored': this.state.registerStatus <= 1,
+                'is-loading': this.state.registerStatus === 1,
+                'is-success': this.state.registerStatus === 2
               })} onClick={() => {this.register()}}>
                 {this.state.registerStatus === 0 && 'Register'}
                 {this.state.registerStatus === 2 && (
