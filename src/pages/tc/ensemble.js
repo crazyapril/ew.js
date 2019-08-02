@@ -16,7 +16,8 @@ export default class EnsemblePage extends Component {
       storms: [],
       timesel: 0,
       nowtime: '----',
-      stormsel: this.basin_full[0]
+      stormsel: this.basin_full[0],
+      stormidx: 0
     }
 
     this.getSelectEntries = this.getSelectEntries.bind(this);
@@ -54,15 +55,19 @@ export default class EnsemblePage extends Component {
   }
 
   handleClick(i, val) {
-    this.setState({stormsel: val});
+    this.setState({stormsel: val, stormidx: i});
   }
 
   handleDropdownSelect(i, val) {
     if (val === this.state.nowtime) return;
     let stormsel = this.state.stormsel;
-    if (this.state.storms[i].storms.indexOf(stormsel) === -1 &&
-      this.basin_full.indexOf(stormsel) === -1) stormsel = this.basin_full[0];
-    this.setState({timesel:i, nowtime:val, stormsel:stormsel});
+    let allstorms = [...this.basin_full, ...this.state.storms[i].storms];
+    let newidx = allstorms.indexOf(stormsel);
+    if (newidx === -1) {
+      stormsel = this.basin_full[0];
+      newidx = 0;
+    }
+    this.setState({timesel:i, nowtime:val, stormsel:stormsel, stormidx:newidx});
   }
 
   render() {
@@ -74,7 +79,7 @@ export default class EnsemblePage extends Component {
             heading='Choose regions or storms'
             entries={entries}
             onListChange={this.handleClick}
-            initIndex={0}
+            initIndex={this.state.stormidx}
           />
         </div>
         <div className='column is-8'>
