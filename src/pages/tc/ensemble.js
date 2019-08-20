@@ -8,9 +8,9 @@ export default class EnsemblePage extends Component {
   constructor(props) {
     super(props);
 
-    this.basin_short = ['WPAC', 'NATL', 'EPAC', 'NIO', 'SIO', 'AUS'];
+    this.basin_short = ['WPAC', 'NATL', 'EPAC', 'NIO', 'SIO', 'AUS', 'EASTASIA'];
     this.basin_full = ['Western Pacific', 'Northern Atlantic', 'Eastern Pacific',
-      'N. Indian Ocean', 'S. Indian Ocean', 'Southern Pacific'];
+      'N. Indian Ocean', 'S. Indian Ocean', 'Southern Pacific', 'East Asian Seas'];
 
     this.state = {
       storms: [],

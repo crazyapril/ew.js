@@ -4,8 +4,9 @@ import ImageBox from '../../components/imagebox';
 import './satellite.css';
 import Axios from '../../components/_axios';
 import classnames from 'classnames';
+import { withStore } from '@spyna/react-store';
 
-export default class SatellitePage extends Component {
+class SatellitePage extends Component {
 
   constructor(props) {
     super(props);
@@ -27,7 +28,8 @@ export default class SatellitePage extends Component {
       loopIndexMax: 30,
       loopImages: [],
       loopAllImages: {},
-      loopPaused: false
+      loopPaused: false,
+      creatingVideo: false
     };
 
     this.handleClick = this.handleClick.bind(this);
@@ -35,6 +37,7 @@ export default class SatellitePage extends Component {
     this.moveActive = this.moveActive.bind(this);
     this.onSliderChange = this.onSliderChange.bind(this);
     this.keydownEvent = this.keydownEvent.bind(this);
+    this.createVideo = this.createVideo.bind(this);
   }
 
   handleClick(i, val) {
@@ -96,6 +99,19 @@ export default class SatellitePage extends Component {
     else if (e.keyCode === 39) this.moveActive(1, false); // right
   }
 
+  createVideo() {
+    this.setState({creatingVideo:true});
+    var windowsRef = window.open();
+    Axios.post(
+      '/action/typhoon/createvideo',
+      {storm: this.props.code, type:this.state.imageType}
+    ).then(res => {
+      this.setState({creatingVideo:false});
+      if (res.data.url === '') return;
+      windowsRef.location = '/media/' + res.data.url;
+    })
+  }
+
   render() {
     let imagePath, imageType = this.state.imageType.toLowerCase().replace('vis', 'b3')
       .replace('ir', 'b13').replace('wv', 'b8').replace('-', '');
@@ -153,16 +169,27 @@ export default class SatellitePage extends Component {
           <ImageBox src={imagePath} />
         </div>
         <div className='column is-2'>
-          <button className='button is-fullwidth is-rounded is-success is-outlined' onClick={this.toggleLoop}>
-            { !this.state.loop &&
-              <><i className='fa fa-play navbar-icon'></i>Loop</>
-            }
-            { this.state.loop &&
-              <><i className='fa fa-square navbar-icon'></i>Latest</>
-            }
-          </button>
+          <div className='buttons'>
+            <button className='button is-fullwidth is-rounded is-success is-outlined' onClick={this.toggleLoop}>
+              { !this.state.loop &&
+                <><i className='fa fa-play navbar-icon'></i>Loop</>
+              }
+              { this.state.loop &&
+                <><i className='fa fa-square navbar-icon'></i>Latest</>
+              }
+            </button>
+            { this.props.store.get('userPlevel') > 0 && (
+              <button className={classnames({
+                'button':true, 'is-rounded':true, 'is-loading':this.state.creatingVideo
+              })} onClick={this.createVideo}>
+                <i className='fa fa-file-video navbar-icon'></i>Create Video
+              </button>
+            )}
+          </div>
         </div>
       </div>
     )
   }
 }
+
+export default withStore(SatellitePage);
