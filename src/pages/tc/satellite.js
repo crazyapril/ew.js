@@ -113,7 +113,10 @@ class SatellitePage extends Component {
   }
 
   render() {
-    let imagePath, imageType = this.state.imageType.toLowerCase().replace('vis', 'b3')
+    let vis_band;
+    if (this.props.code === 'target') vis_band = 'b3';
+    else vis_band = 'b1';
+    let imagePath, imageType = this.state.imageType.toLowerCase().replace('vis', vis_band)
       .replace('ir', 'b13').replace('wv', 'b8').replace('-', '');
     if (!this.state.loop) {
       if (this.props.code === 'target') imagePath = '/media/latest/sate/' + imageType + '.png';
