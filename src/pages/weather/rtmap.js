@@ -3,6 +3,12 @@ import PanelList from '../../components/panellist';
 import ImageBox from '../../components/imagebox';
 
 
+function pad(num, size) {
+  var s = num+"";
+  while (s.length < size) s = "0" + s;
+  return s;
+}
+
 export default class RealTimeMapPage extends Component {
 
   constructor(props) {
@@ -12,7 +18,8 @@ export default class RealTimeMapPage extends Component {
     this.areaKeys = ['china', 'south', 'mideast', 'north', 'midsouth', 'taiwan', 'central', 'northeast', 'southwest', 'midwest', 'shaanxi', 'qinghai', 'xinjiang', 'tibet'];
 
     this.state = {
-      area: this.areas[0]
+      area: this.areas[0],
+      timesel: null
     };
   }
 
@@ -20,7 +27,11 @@ export default class RealTimeMapPage extends Component {
     const entries = this.areas.map(val => ({val: val, disabled: false}));
     let imagePath;
     if (this.state.area === '') imagePath = '';
-    else imagePath = `/protected/latest/weather/realtime/temp_${this.areaKeys[this.areas.indexOf(this.state.area)]}.png`;
+    else {
+      imagePath = `/protected/latest/weather/realtime/temp_${this.areaKeys[this.areas.indexOf(this.state.area)]}`;
+      if (this.state.timesel === '最新') imagePath = imagePath + '.png';
+      else imagePath = imagePath + '_' + pad(this.state.timesel, 2) + '.png';
+    }
     return (
       <div className='columns'>
         <div className='column is-2'>
@@ -32,7 +43,19 @@ export default class RealTimeMapPage extends Component {
           />
         </div>
         <div className='column is-10'>
-        <ImageBox src={imagePath} />
+          <div className='select is-rounded is-small'>
+            <select onChange={(event) => {
+              const newidx = event.target.selectedIndex;
+              if (newidx === 0) this.setState({timesel: '最新'});
+              else this.setState({timesel: newidx - 1});
+            }}>
+              <option selected={this.state.timesel == '最新'}>最新</option>
+              {[...Array(24).keys()].map(item => (
+                <option selected={this.state.timesel == item}>{item}:00</option>
+              ))}
+            </select>
+          </div>
+          <ImageBox src={imagePath} />
         </div>
       </div>
     )
