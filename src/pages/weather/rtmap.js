@@ -19,7 +19,7 @@ export default class RealTimeMapPage extends Component {
 
     this.state = {
       area: this.areas[0],
-      timesel: null
+      timesel: '最新'
     };
   }
 
