@@ -120,7 +120,7 @@ class Navbar extends React.Component {
                   <NavLink className='navbar-item' to='/typhoon/'>Current Storms</NavLink>
                   <NavLink className='navbar-item' to='/typhoon/ensemble/'>ECMWF Ensemble</NavLink>
                   <NavLink className='navbar-item' to='/typhoon/sst/'>Sea Surface Temperature</NavLink>
-                  <NavLink className='navbar-item' to='/typhoon/satellite/target/'>H-8 Target Area Imagery</NavLink>
+                  <NavLink className='navbar-item' to='/typhoon/satellite/target/'>Himawari Satellite Imagery</NavLink>
                 </div>
               </div>
               <NavLink className='navbar-item' to='/model/' activeClassName='is-active'>

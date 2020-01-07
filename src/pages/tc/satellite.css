@@ -55,3 +55,15 @@
   cursor: pointer;
 }
 
+.nav-choice-sate a {
+  padding: 0.2em 1em;
+  margin: 0.25em 0.25em;
+  color: #363636;
+  border-radius: 16px;
+  background-color: whitesmoke;
+}
+
+.nav-choice-sate a.is-active {
+  color: white;
+  background-color: #23D160;
+}

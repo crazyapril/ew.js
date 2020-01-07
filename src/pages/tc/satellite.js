@@ -1,4 +1,5 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
+import { withRouter } from 'react-router';
 import PanelList from '../../components/panellist';
 import ImageBox from '../../components/imagebox';
 import './satellite.css';
@@ -29,7 +30,8 @@ class SatellitePage extends Component {
       loopImages: [],
       loopAllImages: {},
       loopPaused: false,
-      creatingVideo: false
+      creatingVideo: false,
+      sateAreas: []
     };
 
     this.handleClick = this.handleClick.bind(this);
@@ -112,6 +114,16 @@ class SatellitePage extends Component {
     })
   }
 
+  componentDidMount() {
+    Axios.get(
+      '/action/typhoon/areas'
+    ).then(response => {
+      this.setState({
+        sateAreas: response.data.areas
+      })
+    });
+  }
+
   render() {
     let vis_band;
     if (this.props.code === 'target') vis_band = 'b3';
@@ -169,6 +181,25 @@ class SatellitePage extends Component {
             </div>
           </div>
           }
+          { this.state.sateAreas.length > 0 &&
+          <div className='nav-choice-sate is-grouped is-grouped-multiline tags'>
+            {this.state.sateAreas.map((item, i) =>
+              <a
+                key={i.toString()}
+                className={classnames({'is-active': (this.props.code === 'target' && item.target) || this.props.code === item.code})}
+                onClick={() => {
+                  if ((this.props.code === 'target' && item.target) || this.props.code === item.code) return;
+                  this.props.history.push(`/typhoon/satellite/${item.code}/`);
+                }}
+              >{item.code}.{item.name}</a>
+            )}
+          </div>
+          }
+          { this.state.sateAreas.length === 0 &&
+          <div className='notification' style={{borderRadius:'500px', fontFamily:'Lato'}}>
+            Currently no area of interest to watch.
+          </div>
+          }
           <ImageBox src={imagePath} />
         </div>
         <div className='column is-2'>
@@ -195,4 +226,4 @@ class SatellitePage extends Component {
   }
 }
 
-export default withStore(SatellitePage);
+export default withRouter(withStore(SatellitePage));
