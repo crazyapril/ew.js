@@ -154,6 +154,26 @@ class SatellitePage extends Component {
           />
         </div>
         <div className='column is-8'>
+          { this.state.sateAreas.length > 0 &&
+          <div className='nav-choice-sate is-grouped is-grouped-multiline tags'>
+            {this.state.sateAreas.map((item, i) =>
+              <a
+                key={i.toString()}
+                className={classnames({'is-active': (this.props.code === 'target' && item.target) || this.props.code === item.code})}
+                onClick={() => {
+                  if ((this.props.code === 'target' && item.target) || this.props.code === item.code) return;
+                  if (item.target) this.props.history.push('/typhoon/satellite/target/');
+                  else this.props.history.push(`/typhoon/satellite/${item.code}/`);
+                }}
+              >{item.code}.{item.name}</a>
+            )}
+          </div>
+          }
+          { this.state.sateAreas.length === 0 &&
+          <div className='notification' style={{borderRadius:'500px', fontFamily:'Lato'}}>
+            Currently no area of interest to watch.
+          </div>
+          }
           { this.state.loop &&
           <div className='columns'>
             <div className='column is-narrow'>
@@ -179,25 +199,6 @@ class SatellitePage extends Component {
             <div className='column is-fullwidth'>
               <input class="slider" step="1" min="0" max={this.state.loopIndexMax-1} type="range" id="slider" value={this.state.loopIndex} onChange={this.onSliderChange} />
             </div>
-          </div>
-          }
-          { this.state.sateAreas.length > 0 &&
-          <div className='nav-choice-sate is-grouped is-grouped-multiline tags'>
-            {this.state.sateAreas.map((item, i) =>
-              <a
-                key={i.toString()}
-                className={classnames({'is-active': (this.props.code === 'target' && item.target) || this.props.code === item.code})}
-                onClick={() => {
-                  if ((this.props.code === 'target' && item.target) || this.props.code === item.code) return;
-                  this.props.history.push(`/typhoon/satellite/${item.code}/`);
-                }}
-              >{item.code}.{item.name}</a>
-            )}
-          </div>
-          }
-          { this.state.sateAreas.length === 0 &&
-          <div className='notification' style={{borderRadius:'500px', fontFamily:'Lato'}}>
-            Currently no area of interest to watch.
           </div>
           }
           <ImageBox src={imagePath} />
