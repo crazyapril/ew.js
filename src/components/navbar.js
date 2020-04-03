@@ -108,6 +108,9 @@ class Navbar extends React.Component {
                   { this.props.store.get('userPlevel') > 0 && (
                     <NavLink className='navbar-item' to='/weather/realtime/'>Realtime Weather</NavLink>
                   )}
+                  { this.props.store.get('userPlevel') > 0 && (
+                    <NavLink className='navbar-item' to='/weather/stationinfo/'>Station Information</NavLink>
+                  )}
                 </div>
               </div>
               <div className='navbar-item has-dropdown is-hoverable'>

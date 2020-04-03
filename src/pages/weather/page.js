@@ -5,6 +5,7 @@ import classnames from 'classnames';
 import Axios from './../../components/_axios';
 import { Route } from 'react-router-dom';
 import RealTimeMapPage from './rtmap';
+import StationInfoPage from './info';
 import './weather.css';
 
 class WeatherPage extends React.Component {
@@ -123,6 +124,7 @@ export default class WeatherIndexPage extends React.Component {
       <div>
         <Route path={`${match.path}`} exact component={WeatherPage} />
         <Route path={`${match.path}realtime/`} component={RealTimeMapPage} />
+        <Route path={`${match.path}stationinfo/`} component={StationInfoPage} />
       </div>
     )
   }

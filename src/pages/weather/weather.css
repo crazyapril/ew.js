@@ -9,3 +9,90 @@
 .is-expanded > div {
   width: 100%
 }
+
+.search-box {
+  background-color: #fafafa;
+}
+
+.search-box > label {
+  color: #646464;
+}
+
+.search-input, .search-input:hover {
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  border-bottom: solid 1px #646464;
+  background-color: #fafafa;
+}
+
+.search-input:focus {
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  border-bottom: solid 1px #646464;
+}
+
+.search-btn {
+  margin-left: 1px;
+  border-color: #646464;
+  border-radius: 0;
+  border-width: 0 0 1px 0;
+  background-color: #fafafa;
+}
+
+.search-btn:hover {
+  margin-left: 1px;
+  border-color: #646464;
+  border-radius: 0;
+  background-color: #fafafa;
+}
+
+.search-btn > i {
+  color: #ff2b56;
+}
+
+.box-card > label > span {
+  color: gray;
+  font-weight: 100;
+}
+
+.box-card > .level {
+  padding-bottom: 7px;
+  border-bottom: solid 1px #f0f0f0;
+}
+
+.box-card {
+  margin-top: 5px;
+}
+
+.column-card > label > span {
+  font-size: small;
+}
+
+.column-card > label {
+  margin-bottom: 1px !important;
+}
+
+.column-card > p {
+  font-size: larger;
+}
+
+.table-record > tbody > tr > td {
+  text-align: center;
+  vertical-align: middle;
+}
+
+.table-record > thead > tr > th {
+  text-align: center;
+  vertical-align: middle;
+}
+
+.table-record > tbody > tr > th {
+  vertical-align: middle;
+}
+
+.table-record {
+  font-size: small;
+}
+
