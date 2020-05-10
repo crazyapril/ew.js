@@ -215,11 +215,17 @@ class SatellitePage extends Component {
             </button>
             { this.props.store.get('userPlevel') > 0 && (
               <button className={classnames({
-                'button':true, 'is-rounded':true, 'is-loading':this.state.creatingVideo
+                'button':true, 'is-rounded':true, 'is-loading':this.state.creatingVideo, 'is-fullwidth':true
               })} onClick={this.createVideo}>
                 <i className='fa fa-file-video navbar-icon'></i>Create Video
               </button>
             )}
+            <button className='button is-fullwidth is-text is-small is-rounded' onClick={() => {
+              let gifPath;
+              if (this.props.code === 'target') gifPath = '/media/latest/sate/' + imageType + '.gif';
+              else gifPath = `/media/latest/sate/${this.props.code}_${imageType}.gif`;
+              window.open(gifPath);
+            }}>View GIF Loop</button>
           </div>
         </div>
       </div>
