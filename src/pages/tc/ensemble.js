@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import ImageBox from '../../components/imagebox';
 import PanelList from '../../components/panellist';
+import classnames from 'classnames';
 import Axios from '../../components/_axios';
 
 export default class EnsemblePage extends Component {
@@ -12,12 +13,20 @@ export default class EnsemblePage extends Component {
     this.basin_full = ['Western Pacific', 'Northern Atlantic', 'Eastern Pacific',
       'N. Indian Ocean', 'S. Indian Ocean', 'Southern Pacific', 'East Asian Seas'];
 
+    this.plots = {
+      'Strike prob.': '',
+      '34kt wind': '34kt',
+      '50kt wind': '50kt',
+      '64kt wind': '64kt'
+    }
+
     this.state = {
       storms: [],
       timesel: 0,
       nowtime: '----',
       stormsel: this.basin_full[0],
-      stormidx: 0
+      stormidx: 0,
+      plot: ''
     }
 
     this.getSelectEntries = this.getSelectEntries.bind(this);
@@ -50,8 +59,8 @@ export default class EnsemblePage extends Component {
     if (this.state.storms.length === 0) return '';
     let time = this.state.nowtime;
     let index = this.basin_full.indexOf(this.state.stormsel);
-    if (index === -1) return `/media/typhoon/ecens/${time}/${this.state.stormsel}.png`;
-    return `/media/typhoon/ecens/${time}/${this.basin_short[index].toLowerCase()}.png`;
+    if (index === -1) return `/media/typhoon/ensemble/${time}/${this.state.stormsel}${this.state.plot}.png`;
+    return `/media/typhoon/ensemble/${time}/${this.basin_short[index].toLowerCase()}.png`;
   }
 
   handleClick(i, val) {
@@ -83,6 +92,17 @@ export default class EnsemblePage extends Component {
           />
         </div>
         <div className='column is-8'>
+          { !this.basin_full.includes(this.state.stormsel) && <div className='nav-choice-sate is-grouped is-grouped-multiline tags'>
+            {Object.keys(this.plots).map(key =>
+              <a
+                key={key}
+                className={classnames({'is-active': this.state.plot === this.plots[key] })}
+                onClick={() => {
+                  this.setState({plot: this.plots[key]});
+                }}
+              >{key}</a>
+            )}
+          </div> }
           <ImageBox src={path} />
         </div>
         <div className='column is-2'>
